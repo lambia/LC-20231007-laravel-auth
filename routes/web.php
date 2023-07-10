@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +23,6 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])
  	->prefix('admin') //definisce il prefisso "admin/" per le rotte di questo gruppo
- 	->namespace('Admin') //definisce il namespace per i Controller chiamati in questo gruppo
  	->name('admin.') //definisce il pattern con cui generare i nomi delle rotte cioè "admin.qualcosa"
  	->group(function () {
  	
@@ -31,6 +31,8 @@ Route::middleware(['auth'])
  		// - il nome della rotta ->name("dashboard") diventa ->name("admin.dashboard")
  		// - il controller DashboardController appartiene al namespace Admin
  		Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::resource('posts', PostController::class);
 
 });
 
