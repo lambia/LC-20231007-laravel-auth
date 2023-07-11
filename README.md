@@ -22,8 +22,9 @@ Questo git-template fornisce lo scaffold di una web application realizzata con L
 - Clonare il repository appena creato sul proprio PC
 - Creare un database
 - Creare un file `.env`. Si può procedere copiandolo da `.env.example` e rinominandolo
-- Per creare la APP_KEY nel `.env`, lanciare il comando:
+- Per creare la APP_KEY nel `.env`, lanciare il comando dedicato, ma prima installare le dipendenze composer
 	```bash
+    composer install
 	php artisan key:generate
 	```
 - Controllare che tutti i dati nel `.env` siano corretti (attenzione al database)
@@ -31,9 +32,8 @@ Questo git-template fornisce lo scaffold di una web application realizzata con L
 	```bash
 	php artisan migrate:fresh --seed
 	```
-- Installare le dipendenze PHP e lanciare il progetto
+- Lanciare il progetto tramite il server built-in
 	```bash
-	composer install
 	php artisan serve
 	```
 - Installare le dipendenze NPM e lanciare il progetto
@@ -154,6 +154,8 @@ Questo git-template fornisce lo scaffold di una web application realizzata con L
 	```
 	</details>
 
+ - Attenzione!! A questo punto avrete degli errori se non completate prima la parte successiva "ROUTES E CONTROLLER", non vi spaventate, è normale
+
 # REFACTORING DASHBOARD - ROUTES E CONTROLLER
 
 - Creare un controller `Admin/DashboardController` 
@@ -188,14 +190,12 @@ Questo git-template fornisce lo scaffold di una web application realizzata con L
 
 	Route::middleware(['auth'])
 		->prefix('admin') //definisce il prefisso "admin/" per le rotte di questo gruppo
-		->namespace('Admin') //definisce il namespace per i Controller chiamati in questo gruppo
 		->name('admin.') //definisce il pattern con cui generare i nomi delle rotte cioè "admin.qualcosa"
 		->group(function () {
 		
 			//Siamo nel gruppo quindi:
 			// - il percorso "/" diventa "admin/"
 			// - il nome della rotta ->name("dashboard") diventa ->name("admin.dashboard")
-			// - il controller DashboardController appartiene al namespace Admin
 			Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 	});
@@ -209,6 +209,15 @@ Questo git-template fornisce lo scaffold di una web application realizzata con L
 	public const HOME = '/admin';
 	```
 	In questo modo, dopo l’autenticazione, l’utente verrà reindirizzato alla dashboard, che risponde alla rotta `/admin`
+
+- Modificare il link alla dashboard dal menu del layout di base qui: resources/views/layouts/app.blade.php:70
+	```php
+    <a class="dropdown-item" href="{{ url('dashboard') }}">{{__('Dashboard')}}</a>
+	```
+     modificare in:
+	```php
+    <a class="dropdown-item" href="{{ route('admin.dashboard') }}">{{__('Dashboard')}}</a>
+	```
 
 # RISORSE: MODEL, CONTROLLER, MIGRATION, SEEDER
 
@@ -231,7 +240,9 @@ php artisan make:model NomeModello -rmsR
 
 Qui trovate la lista dei parametri accettati da [`make:model`](https://artisan.page/#makemodel)
 
-Infine definire migration e seeder e lanciarli usando il comando:
+A questo punto potete andare a definire il comportamento di migration e seeder nei relativi file.
+
+Infine lanciate entrambi usando il comando:
 ```bash
 php artisan migrate:fresh --seed
 ```
@@ -252,17 +263,26 @@ Procedere come in passato, ma inserendo le rotte del Resource Controller all'int
 
 ```php
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\PostController; // <---- Importare il controller da usare!!
 
 // ...
 
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
 
 	Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    
+	
 	// Admin Post CRUD
-    Route::resource('posts', PostController::class)->parameters([
-        'posts' => 'post:slug',
-    ]);
+	Route::resource('posts', PostController::class);
 });
+```
+
+A questo punto dal nostro Resource Controller possiamo popolare i vari metodi (index, create ecc..) restituendo le relative viste o validando/lavorando i dati come sempre.
+
+L'unica differenza sarà il percorso in cui salvare le viste. Se prima si creava sotto "views" una cartella "nomeRisorsa" con tutte le viste:
+```bash
+/resources/views/posts/*.blade.php
+```
+Adesso invece quella cartella andrà creata sotto "views/admin"
+```bash
+/resources/views/admin/posts/*.blade.php
 ```
