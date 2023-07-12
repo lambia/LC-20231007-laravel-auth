@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
+use App\Models\Tag;
 
 class PostController extends Controller
 {
@@ -31,8 +32,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view("admin.posts.create", compact("categories"));
+        return view("admin.posts.create", compact("categories", "tags"));
     }
 
     /**
@@ -48,6 +50,11 @@ class PostController extends Controller
         $newPost = new Post();
         $newPost->fill($data);
         $newPost->save();
+
+
+        $newPost->tags()->attach( $data["tags"] );
+
+        // dump( $newPost->tags );
 
         return to_route("admin.posts.show", $newPost);
     }
@@ -83,7 +90,18 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $data = $request->validated();
+
+        $post->update($data);
+
+        //Eliminiamo il collegamento con eventuali tags e poi lo ricreiamo
+        // $post->tags()->detach();
+        // $post->tags()->attach( $data->tags );
+
+        //Oppure facciamo tutto in un unico comando
+        $post->tags()->sync( $data->tags );
+
+        return to_route("admin.posts.show", $post);
     }
 
     /**
