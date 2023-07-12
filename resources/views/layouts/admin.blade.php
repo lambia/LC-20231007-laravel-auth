@@ -44,13 +44,13 @@
 
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="{{ route('admin.posts.index') }}">
-                                    <i class="fa-solid fa-list-alt fa-lg fa-fw"></i> Lista prodotti
+                                    <i class="fa-solid fa-list-alt fa-lg fa-fw"></i> Lista posts
                                 </a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="{{ route('admin.posts.create') }}">
-                                    <i class="fa-solid fa-plus   fa-lg fa-fw"></i> Aggiungi prodotto
+                                    <i class="fa-solid fa-plus   fa-lg fa-fw"></i> Nuovo post
                                 </a>
                             </li>
 
