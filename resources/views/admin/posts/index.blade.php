@@ -9,6 +9,19 @@
                 <img class="card-img-top" src="{{ $post->image }}" alt="{{ $post->title }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $post->title }}</h5>
+                    @if ($post->category)
+                        <p>Categoria: {{ $post->category->name }} </p>
+                    @else
+                        <p>Non categorizzato</p>
+                    @endif
+
+                    <p>Tags: 
+                    @forelse ($post->tags as $tag)
+                        <span>{{$tag->name}}</span>
+                    @empty
+                        <span>Nessuno</span>
+                    @endforelse
+                    </p>
                     <a href="{{ route("admin.posts.show", $post) }}" class="btn btn-primary">View details</a>
                 </div>
             </div>
