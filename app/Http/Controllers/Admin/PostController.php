@@ -47,9 +47,18 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $data = $request->validated();
+        
+        if($request->hasFile("image")) {
 
-        $img_path = Storage::put("uploads", $data['image']);
-        $data['image'] = $img_path;
+            //dato dalla request, non validato
+            // $img_path = $request->file("image")->store("uploads");
+
+            $img_path = Storage::put("uploads", $data['image']);
+
+            // $img_path = $data["image"]->store("uploads");
+
+            $data['image'] = $img_path;
+        }
 
         $newPost = new Post();
         $newPost->fill($data);

@@ -26,7 +26,7 @@ class StorePostRequest extends FormRequest
         return [
             "title" => "required|min:4|max:160",
             "content" => "max:65535",
-            "image" => "nullable",
+            "image" => "nullable|image|max:1024",
             "category_id" => "nullable|exists:categories,id",
             "tags" => "nullable|exists:tags,id"
         ];
