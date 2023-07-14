@@ -9,6 +9,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -47,10 +48,12 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
+        $img_path = Storage::put("uploads", $data['image']);
+        $data['image'] = $img_path;
+
         $newPost = new Post();
         $newPost->fill($data);
         $newPost->save();
-
 
         $newPost->tags()->attach( $data["tags"] );
 

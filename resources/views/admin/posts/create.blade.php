@@ -16,7 +16,7 @@
         </div>
         @endif
 
-        <form action="{{ route("admin.posts.store") }}" method="POST" class="needs-validation">
+        <form action="{{ route("admin.posts.store") }}" method="POST" class="needs-validation" enctype="multipart/form-data">
             @csrf
 
             <label for="title">Titolo</label>
@@ -40,8 +40,8 @@
             <label for="content">Contenuto</label>
             <textarea name="content" id="content" cols="30" rows="10" class="form-control mb-4">{{ old("content") }}</textarea>
 
-            <label for="image">URL Immagine</label>
-            <input type="text" name="image" id="image" value="{{ old("image") }}" class="form-control mb-4">
+            <label for="image">Immagine di copertina</label>
+            <input type="file" name="image" id="image" class="form-control mb-4">
 
             <input type="submit" class="btn btn-primary form-control mb-4" value="Crea post">
         

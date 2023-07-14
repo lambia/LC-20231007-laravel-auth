@@ -14,7 +14,7 @@
         </ul>
         {{-- <h2>Categoria: {{ $post->category?->name }}</h2> --}}
         <p>{{ $post->content }}</p>
-        <img src="{{ $post->image }}" alt="{{ $post->title }}" />
+        <img src="{{ asset("storage/" . $post->image) }}" alt="{{ $post->title }}" />
     </div>
 </div>
 

@@ -25,7 +25,7 @@ class PostSeeder extends Seeder
             $post = new Post();
             $post->title = $faker->words(3, true);
             $post->content = $faker->text(500);
-            $post->image = $faker->imageUrl(800, 600, 'animals', true);
+            $post->image = "placeholders/placeholder.png";
             // $post->category_id = rand(1,4); <--- è hardcoded, no bueno
             // $post->category_id = rand(1, count($categories) );
             $post->category_id = $categories->random()->id;

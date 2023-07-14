@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
+    'default' => env('FILESYSTEM_DISK', 'public'),
 
     /*
     |--------------------------------------------------------------------------
@@ -70,6 +70,7 @@ return [
     */
 
     'links' => [
+        // public/storage => storage/app/public
         public_path('storage') => storage_path('app/public'),
     ],
 

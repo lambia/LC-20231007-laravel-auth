@@ -6,7 +6,7 @@
     <div class="row justify-content-between">
         @foreach ($posts as $post)
             <div class="card p-0 mb-4" style="width: 18rem;">
-                <img class="card-img-top" src="{{ $post->image }}" alt="{{ $post->title }}">
+                <img class="card-img-top" src="{{ asset("storage/".$post->image) }}" alt="{{ $post->title }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $post->title }}</h5>
                     @if ($post->category)
