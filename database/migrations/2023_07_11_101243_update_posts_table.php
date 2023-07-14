@@ -23,6 +23,15 @@ return new class extends Migration
 
             //Metodo alternativo equivalente alle due istruzioni precedenti
             $table->foreignId('category_id')->nullable()->constrained();
+            
+            //per aggiungere la colonna "category_id" subito dopo "id"
+            // $table->after('id', function (Blueprint $table) {
+            //     $table->foreignId('category_id')->nullable()->constrained();
+            // });
+
+            //oppure, per una colonna singola:
+            //$table->foreignId('category_id')->nullable()->after("id")->constrained();
+
 
         });
     }

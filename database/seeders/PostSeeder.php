@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Post;
 use App\Models\Tag;
 use Faker\Generator as Faker;
+use Illuminate\Support\Facades\Schema;
 
 class PostSeeder extends Seeder
 {
@@ -18,6 +19,10 @@ class PostSeeder extends Seeder
      */
     public function run(Faker $faker)
     {
+        Schema::disableForeignKeyConstraints();
+        Post::truncate();
+        Schema::enableForeignKeyConstraints();
+
         $categories = Category::all(["id"]);
         $tags = Tag::all(["id"]);
 
