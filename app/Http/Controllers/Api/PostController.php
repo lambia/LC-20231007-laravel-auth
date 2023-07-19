@@ -26,4 +26,17 @@ class PostController extends Controller
         return response()->json($response);
 
     }
+
+    public function show($id) {
+
+        $post = Post::with("category", "tags")->find($id);
+        
+        $response = [
+            "success" => true,
+            "results" => $post
+        ];
+
+        return response()->json($response);
+
+    }
 }
