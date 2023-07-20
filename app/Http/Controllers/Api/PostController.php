@@ -27,6 +27,19 @@ class PostController extends Controller
 
     }
 
+    public function count(){
+
+        $postsNumber = Post::all()->count();
+
+        $response = [
+            "success" => true,
+            "results" => $postsNumber
+        ];
+
+        return response()->json($response);
+
+    }
+
     public function show($id) {
 
         $post = Post::with("category", "tags")->find($id);
